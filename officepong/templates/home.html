@@ -1,0 +1,10 @@
+<!doctype html>
+<title>OfficePong Home Page</title>
+<h1>Hello, World!</h1>
+<h2>Players</h2>
+<ol>
+{% for name, elo in players %}
+  <li>{{ name }} ({{ elo }}) </li>
+{% endfor %}
+</ol>
+</html>  
