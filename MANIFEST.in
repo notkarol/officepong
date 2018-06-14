@@ -1,0 +1,2 @@
+recursive-include officepong/templates *
+recursive-include officepong/static *

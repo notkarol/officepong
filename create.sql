@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS player (
     name VARCHAR(16) PRIMARY KEY,
-    elo FLOAT DEFAULT 1500
+    elo FLOAT DEFAULT 1500 NOT NULL
 );
 CREATE TABLE IF NOT EXISTS match (
     timestamp FLOAT PRIMARY KEY,
-    winners VARCHAR(32),
-    losers VARCHAR(32),
-    winning_score INTEGER,
-    losing_score INTEGER
+    winners VARCHAR(32) NOT NULL,
+    losers VARCHAR(32) NOT NULL,
+    winning_score INTEGER NOT NULL,
+    losing_score INTEGER NOT NULL
 );

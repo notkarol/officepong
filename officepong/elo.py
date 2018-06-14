@@ -1,7 +1,7 @@
 
-def calculate_delta(elo_w, elo_l, score_w, score_l, k_multiplier=3):
-    k_factor = k_multiplier * max(score_w, score_l)
-    actual = elo_w / (elo_w + elo_l)
-    expected = 1 / (1 + 10 ** ((elo_l - elo_w) / 400))
+def calculate_delta(elo_winner, elo_loser, score_winner, score_loser, k_multiplier=3):
+    k_factor = k_multiplier * max(score_winner, score_loser)
+    actual = elo_winner / (elo_winner + elo_loser)
+    expected = 1 / (1 + 10 ** ((elo_loser - elo_winner) / 400))
     delta = k_factor * (actual - expected)
     return delta

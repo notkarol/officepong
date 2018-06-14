@@ -1,10 +1,44 @@
+{# officepong/templates/home.html #}
+
 <!doctype html>
 <title>OfficePong Home Page</title>
 <h1>Hello, World!</h1>
 <h2>Players</h2>
-<ol>
-{% for name, elo in players %}
-  <li>{{ name }} ({{ elo }}) </li>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Elo</th>
+  </tr>
+{% for player in players %}
+<tr>
+  <td>{{player.name}}</td>
+  <td>{{player.elo|int}}</td>
+</tr>
 {% endfor %}
-</ol>
+</table>
+<h2>Matches</h2>
+<table>
+  <tr>
+    <th>Winner</th>
+    <th>Loser</th>
+    <th>Score</th>
+{% for match in matches %}
+<tr>
+  <td>{{match.winners}}</td>
+  <td>{{match.losers}}</td>
+  <td>{{match.winning_score}} : {{match.losing_score}}</td>
+</tr>
+{% endfor %}
+</table>
+<form action="{{ url_for('register') }}" method="post">
+  <br>{{ register_form.name }}
+  <br><input type="submit" value="Register">
+</form>
+<form action="{{ url_for('score') }}" method="post">
+  <br>{{ score_form.winners }}
+  <br>{{ score_form.losers }}
+  <br>{{ score_form.winning_score }}
+  <br>{{ score_form.losing_score }}
+  <br><input type="submit" value="Score">
+</form>
 </html>  
