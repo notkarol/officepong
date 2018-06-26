@@ -1,8 +1,14 @@
-from officepong import db
+"""
+Database schema.
+"""
 from datetime import datetime
 from time import time
+from officepong import db
 
 class Player(db.Model):
+    """
+    A player is a user with an ELO score.
+    """
     name = db.Column(db.String(16), primary_key=True)
     elo = db.Column(db.Float, default=1500)
 
@@ -10,27 +16,33 @@ class Player(db.Model):
         super(Player, self)
         self.name = name
         self.elo = elo
-        
+
     def __repr__(self):
         return "%s-%i" % (self.name, self.elo)
 
 
 class Match(db.Model):
+    """
+    A match is a game, it can have multiple winners and losers, and a
+    a score for the winners and losers.
+    """
     timestamp = db.Column(db.Float, primary_key=True)
     winners = db.Column(db.String(32))
     losers = db.Column(db.String(32))
     winning_score = db.Column(db.Integer())
     losing_score = db.Column(db.Integer())
-    
-    def __init__(self, winners=None, losers=None, winning_score=None, losing_score=None):
+    expected = db.Column(db.Float())
+
+    def __init__(self, winners=None, losers=None, winning_score=None, losing_score=None,
+                 expected=None):
         super(Match, self)
         self.timestamp = time()
         self.winners = winners
         self.losers = losers
-        self.winning_score = None if winning_score is None else winning_score
-        self.losing_score = None if losing_score is None else losing_score
+        self.winning_score = winning_score
+        self.losing_score = losing_score
+        self.expected = expected
 
     def __repr__(self):
-        date_str = datetime.fromtimestamp(int(self.timestamp)).strftime("%Y-%m-%d %H:%M:%S")
-        return "%s %s:%s (%i:%i)" % (date_str, self.winners, self.losers,
+        return "%i %s:%s (%i:%i)" % (self.timestamp, self.winners, self.losers,
                                      self.winning_score, self.losing_score)

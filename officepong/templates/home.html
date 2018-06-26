@@ -1,44 +1,76 @@
 {# officepong/templates/home.html #}
-
 <!doctype html>
-<title>OfficePong Home Page</title>
-<h1>Hello, World!</h1>
-<h2>Players</h2>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Elo</th>
-  </tr>
-{% for player in players %}
-<tr>
-  <td>{{player.name}}</td>
-  <td>{{player.elo|int}}</td>
-</tr>
-{% endfor %}
-</table>
-<h2>Matches</h2>
-<table>
-  <tr>
-    <th>Winner</th>
-    <th>Loser</th>
-    <th>Score</th>
-{% for match in matches %}
-<tr>
-  <td>{{match.winners}}</td>
-  <td>{{match.losers}}</td>
-  <td>{{match.winning_score}} : {{match.losing_score}}</td>
-</tr>
-{% endfor %}
-</table>
-<form action="{{ url_for('register') }}" method="post">
-  <br>{{ register_form.name }}
-  <br><input type="submit" value="Register">
-</form>
-<form action="{{ url_for('score') }}" method="post">
-  <br>{{ score_form.winners }}
-  <br>{{ score_form.losers }}
-  <br>{{ score_form.winning_score }}
-  <br>{{ score_form.losing_score }}
-  <br><input type="submit" value="Score">
-</form>
+<head>
+  <title>OfficePong</title>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for("static", filename="style.css") }}">
+</head>
+<body>
+  <h2>LeaderBoard</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Elo</th>
+    </tr>
+    {% for elo, name in players %}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{elo|int}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Matches</h2>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Winner</th>
+      <th>Loser</th>
+      <th>Score</th>
+      <th>Exp%</th>
+      {% for match in matches[:-10:-1] %}
+    <tr>
+      <td>{{convert_timestamp(match.timestamp)}}</td>
+      <td>{{match.winners}}</td>
+      <td>{{match.losers}}</td>
+      <td>{{match.winning_score}} : {{match.losing_score}}</td>
+      <td>{{'%i%%' % (100 * (match.expected|float))}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>Register</h2>
+  <form action="{{ url_for("register") }}" method="post">
+    <input type="text" name="name">
+    <input type="submit" value="Register">
+  </form>
+  <h2>Score</h2>
+  <form action="{{ url_for("score") }}" method="post">
+    <div class="winner">
+      {% for elo, name in players %}
+      <input type="checkbox" value="{{name}}" name="winner" id="winner_{{name}}"/>
+      <label for="winner_{{name}}">{{name}}</label>
+      {% endfor %}
+    </div>
+    <br>
+    <div class="loser">
+      {% for elo, name in players %}
+      <input type="checkbox" value="{{name}}" name="loser" id="loser_{{name}}"/>
+      <label for="loser_{{name}}">{{name}}</label>
+      {% endfor %}
+    </div>
+    <br>
+    <div class="winning_score">
+      {% for n in range(11,33) %}
+      <input type="radio" value="{{n}}" name="winning_score" id="winning_score_{{n}}"/>
+      <label for="winning_score_{{n}}">{{n}}</label>
+      {% endfor %}
+    </div>
+    <br>
+    <div class="losing_score">
+      {% for n in range(31) %}
+      <input type="radio" value="{{n}}" name="losing_score" id="losing_score_{{n}}"/>
+      <label for="losing_score_{{n}}">{{n}}</label>
+      {% endfor %}
+    </div>
+    <br><input type="submit" value="Score">
+  </form>
+</body>
 </html>  

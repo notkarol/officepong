@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS match (
     winners VARCHAR(32) NOT NULL,
     losers VARCHAR(32) NOT NULL,
     winning_score INTEGER NOT NULL,
-    losing_score INTEGER NOT NULL
+    losing_score INTEGER NOT NULL,
+    expected FLOAT NOT NULL
 );
