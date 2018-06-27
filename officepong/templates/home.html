@@ -36,11 +36,6 @@
     </tr>
     {% endfor %}
   </table>
-  <h2>Register</h2>
-  <form action="{{ url_for("register") }}" method="post">
-    <input type="text" name="name">
-    <input type="submit" value="Register">
-  </form>
   <h2>Score</h2>
   <form action="{{ url_for("score") }}" method="post">
     <div class="winner">
@@ -71,6 +66,11 @@
       {% endfor %}
     </div>
     <br><input type="submit" value="Score">
+  </form>
+  <h2>Register</h2>
+  <form action="{{ url_for("register") }}" method="post">
+    <input type="text" name="name">
+    <input type="submit" value="Register">
   </form>
 </body>
 </html>  
