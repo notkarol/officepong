@@ -40,3 +40,12 @@ input[type="radio"] {
 .losing_score input[type="radio"]:checked+label {
     background: red;
 }
+.results {
+    height: 400px;
+}
+.leaderboard {
+    float: left;
+}
+.matches {
+    float: right;
+}

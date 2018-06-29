@@ -5,62 +5,76 @@
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for("static", filename="style.css") }}">
 </head>
 <body>
-  <h2>LeaderBoard</h2>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Elo</th>
-    </tr>
-    {% for elo, name in players %}
-    <tr>
-      <td>{{name}}</td>
-      <td>{{elo|int}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <h2>Matches</h2>
-  <table>
-    <tr>
-      <th>Date</th>
-      <th>Winner</th>
-      <th>Loser</th>
-      <th>Score</th>
-      <th>Exp%</th>
-      {% for match in matches[:-10:-1] %}
-    <tr>
-      <td>{{convert_timestamp(match.timestamp)}}</td>
-      <td>{{match.winners}}</td>
-      <td>{{match.losers}}</td>
-      <td>{{match.winning_score}} : {{match.losing_score}}</td>
-      <td>{{'%i%%' % (100 * (match.expected|float))}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <h2>Score</h2>
-  <form action="{{ url_for("score") }}" method="post">
+  <div class="results">
+    <div class="matches">
+      <h2>Matches</h2>
+      <table>
+	<tr>
+	  <th>Date</th>
+	  <th>Won</th>
+	  <th>Lost</th>
+	  <th>Score</th>
+	  <th>Act%</th>
+	  <th>Exp%</th>
+	  <th>Delta</th>
+	</tr>
+	{% for match in matches[:-10:-1] %}
+	<tr>
+	  <td>{{convert_timestamp(match.timestamp)}}</td>
+	  <td>{{match.winners}}</td>
+	  <td>{{match.losers}}</td>
+	  <td>{{match.winning_score}} : {{match.losing_score}}</td>
+	  <td>{{'%i%%' % (100 * (match.actual|float))}}</td>
+	  <td>{{'%i%%' % (100 * (match.expected|float))}}</td>
+	  <td>{{'%.1f' % (match.delta|float)}}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+    <div class="leaderboard">
+      <h2>LeaderBoard</h2>
+      <table>
+	<tr>
+	  <th>Name</th>
+	  <th>Elo</th>
+	  <th>#Games</th>
+	</tr>
+	{% for elo, name, games in players if games > 5 %}
+	<tr>
+	  <td>{{name}}</td>
+	  <td>{{elo|int}}</td>
+	  <td>{{games|int}}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+  </div>
+  <h2>Add Match</h2>
+  <form action="{{ url_for("add_match") }}" method="post">
+    <h3>Winner</h3>
     <div class="winner">
-      {% for elo, name in players %}
+      {% for elo, name, _ in players %}
       <input type="checkbox" value="{{name}}" name="winner" id="winner_{{name}}"/>
       <label for="winner_{{name}}">{{name}}</label>
       {% endfor %}
     </div>
     <br>
+    <div class="winning_score">
+      {% for n in range(11,29) %}
+      <input type="radio" value="{{n}}" name="winning_score" id="winning_score_{{n}}"/>
+      <label for="winning_score_{{n}}">{{n}}</label>
+      {% endfor %}
+    </div>
+    <h3>Contender</h3>
     <div class="loser">
-      {% for elo, name in players %}
+      {% for elo, name, _ in players %}
       <input type="checkbox" value="{{name}}" name="loser" id="loser_{{name}}"/>
       <label for="loser_{{name}}">{{name}}</label>
       {% endfor %}
     </div>
     <br>
-    <div class="winning_score">
-      {% for n in range(11,33) %}
-      <input type="radio" value="{{n}}" name="winning_score" id="winning_score_{{n}}"/>
-      <label for="winning_score_{{n}}">{{n}}</label>
-      {% endfor %}
-    </div>
-    <br>
     <div class="losing_score">
-      {% for n in range(31) %}
+      {% for n in range(27) %}
       <input type="radio" value="{{n}}" name="losing_score" id="losing_score_{{n}}"/>
       <label for="losing_score_{{n}}">{{n}}</label>
       {% endfor %}
