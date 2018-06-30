@@ -42,8 +42,8 @@
 	{% for elo, name, games in players if games >= 0 %}
 	<tr>
 	  <td>{{name}}</td>
-	  <td>{{elo|int}}</td>
-	  <td>{{games|int}}</td>
+	  <td align="right">{{elo|int}}</td>
+	  <td align="right">{{games|int}}</td>
 	</tr>
 	{% endfor %}
       </table>
