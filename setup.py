@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='officepong',
-      version='0.1',
+      version='0.2',
       description='Keep track of ELO in your office',
       long_description=__doc__,
       author='Karol Zieba',

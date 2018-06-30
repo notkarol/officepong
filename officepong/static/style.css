@@ -1,51 +1,100 @@
+body {
+    max-width: 810px;
+    margin: auto;
+    background-color: #ffa500;
+}
 table {
-    border-collapse:collapse; 
+    border-collapse: collapse;
+    position: relative;
 }
 td {
     border: 1px solid black;
     padding: 5px;
+    margin: 5px;
 }
 label {
     display: inline-block;
     cursor: pointer;    
     border: 1px solid black;
-    width: 80px;
-    padding: 10px 0;
+    width: 98px;
+    padding: 15px 0px;
     margin: 0px;
     text-align: center;
+    background-color: #eeeeee;
 }
 input[type="checkbox"] {
     display: none;
-    margin: 0px;
-    padding: 0px;
 }
 input[type="submit"] {
     margin: 0px;
     padding: 10px;
+    background-color: #eeeeee;
+}
+input[type="submit"] {
+    margin: 0px;
+    padding: 10px;
+    background-color: #ffb6c1;
+}
+input[type="text"] {
+    margin: 0px;
+    padding: 10px;
+    background-color: #eeeeee;
 }
 input[type="radio"] {
     display: none;
-    margin: 0px;
-    padding: 0px;
 }
 .winner input[type="checkbox"]:checked+label {
-    background: green;
+    background: #98fb98;
 }
 .loser input[type="checkbox"]:checked+label {
-    background: red;
+    background: #f08080;
 }
-.winning_score input[type="radio"]:checked+label {
-    background: green;
+div.winner {
+    max-width: 400px;
+    position: relative;
+    display: inline-block;
 }
-.losing_score input[type="radio"]:checked+label {
-    background: red;
+div.loser {
+    max-width: 400px;
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+select {
+    text-align-last: center;
+    margin: 0px;
+    padding: 5px;
+    font-size: 1.5em;
+    background-color: #eeeeee;
+}
+.winner select {
+    border: 1px solid #98fb98;
+    width: 400px;
+    margin: 20px 0px;
+}
+.loser select {
+    border: 1px solid #f08080;
+    width: 400px;
+    margin: 20px 0px;
 }
 .results {
     height: 400px;
+    max-height: 400px;
 }
 .leaderboard {
     float: left;
+    overflow: scroll;
+    max-height: 400px;
 }
 .matches {
+    float: right;
+    overflow: scroll;
+    max-height: 400px;
+}
+.wide {
+    display: block;
+    width: 100%;
+}
+.recalculate {
     float: right;
 }

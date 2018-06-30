@@ -7,39 +7,39 @@
 <body>
   <div class="results">
     <div class="matches">
-      <h2>Matches</h2>
+      <h3>Match History</h3>
       <table>
 	<tr>
 	  <th>Date</th>
 	  <th>Won</th>
 	  <th>Lost</th>
 	  <th>Score</th>
-	  <th>Act%</th>
-	  <th>Exp%</th>
-	  <th>Delta</th>
+	  <th>Act.</th>
+	  <th>Exp.</th>
+	  <th>&Delta;</th>
 	</tr>
-	{% for match in matches[:-10:-1] %}
+	{% for match in matches[::-1] %}
 	<tr>
 	  <td>{{convert_timestamp(match.timestamp)}}</td>
 	  <td>{{match.winners}}</td>
 	  <td>{{match.losers}}</td>
-	  <td>{{match.winning_score}} : {{match.losing_score}}</td>
+	  <td>{{match.win_score}} : {{match.lose_score}}</td>
 	  <td>{{'%i%%' % (100 * (match.actual|float))}}</td>
 	  <td>{{'%i%%' % (100 * (match.expected|float))}}</td>
-	  <td>{{'%.1f' % (match.delta|float)}}</td>
+	  <td align="right">{{'%.1f' % (match.delta|float)}}</td>
 	</tr>
 	{% endfor %}
       </table>
     </div>
     <div class="leaderboard">
-      <h2>LeaderBoard</h2>
+      <h3>Leaderboard</h3>
       <table>
 	<tr>
 	  <th>Name</th>
 	  <th>Elo</th>
-	  <th>#Games</th>
+	  <th align="right">Games</th>
 	</tr>
-	{% for elo, name, games in players if games > 5 %}
+	{% for elo, name, games in players if games >= 0 %}
 	<tr>
 	  <td>{{name}}</td>
 	  <td>{{elo|int}}</td>
@@ -49,42 +49,45 @@
       </table>
     </div>
   </div>
-  <h2>Add Match</h2>
+  <hr>
+  <div>
   <form action="{{ url_for("add_match") }}" method="post">
-    <h3>Winner</h3>
-    <div class="winner">
-      {% for elo, name, _ in players %}
-      <input type="checkbox" value="{{name}}" name="winner" id="winner_{{name}}"/>
-      <label for="winner_{{name}}">{{name}}</label>
-      {% endfor %}
-    </div>
-    <br>
-    <div class="winning_score">
-      {% for n in range(11,29) %}
-      <input type="radio" value="{{n}}" name="winning_score" id="winning_score_{{n}}"/>
-      <label for="winning_score_{{n}}">{{n}}</label>
-      {% endfor %}
-    </div>
-    <h3>Contender</h3>
     <div class="loser">
-      {% for elo, name, _ in players %}
-      <input type="checkbox" value="{{name}}" name="loser" id="loser_{{name}}"/>
-      <label for="loser_{{name}}">{{name}}</label>
-      {% endfor %}
+      <h3>Loser</h3>
+      {% for elo, name, _ in players %}<input type="checkbox" value="{{name}}" name="loser" id="lose_{{name}}"/><label for="lose_{{name}}">{{name}}</label>{% endfor %}
+      <center>
+	<select class="lose_score" name="lose_score">
+	  <option disabled selected value>
+	    {% for n in range(31) %}
+	  <option value="{{n}}">{{n}}</option>
+	  {% endfor %}
+	</select>
+      </center>
     </div>
-    <br>
-    <div class="losing_score">
-      {% for n in range(27) %}
-      <input type="radio" value="{{n}}" name="losing_score" id="losing_score_{{n}}"/>
-      <label for="losing_score_{{n}}">{{n}}</label>
-      {% endfor %}
+    <div class="winner">
+      <h3>Winner</h3>
+      {% for elo, name, _ in players %}<input type="checkbox" value="{{name}}" name="winner" id="win_{{name}}"/><label for="win_{{name}}">{{name}}</label>{% endfor %}
+      <center>
+	<select name="win_score">
+	  <option value="21">21</option>
+	  {% for n in range(33) %}
+	  <option value="{{n}}">{{n}}</option>
+	  {% endfor %}
+	</select>
+      </center>
     </div>
-    <br><input type="submit" value="Score">
+    <input type="submit" value="Add Match" class="wide">
   </form>
-  <h2>Register</h2>
+  </div>
+  <hr>
+  <div class="recalculate">
+    <form action="{{ url_for("recalculate") }}" method="post">
+      <input type="submit" value="Recalculate">
+    </form>
+  </div>
   <form action="{{ url_for("register") }}" method="post">
     <input type="text" name="name">
     <input type="submit" value="Register">
   </form>
 </body>
-</html>  
+</html>
