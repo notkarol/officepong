@@ -29,7 +29,8 @@ def add_match():
     win_names, lose_names = request.form.getlist('winner'), request.form.getlist('loser')
     win_score, lose_score = int(request.form['win_score']), int(request.form['lose_score'])
 
-    if lose_score + 2 > win_score:
+    # Minimize misclicks
+    if lose_score + 2 > win_score or (win_score not in (11, 21) and lose_score + 2 != win_score):
         return redirect(url_for('index'))
     
     # Don't add score if there's a problem with the names
@@ -54,11 +55,11 @@ def add_match():
 
     # Update elo and #games for both losers and winners
     for name in win_names:
-        e = players[name]['elo'] + delta
+        e = players[name]['elo'] + delta / len(win_names)
         g = players[name]['games'] + 1
         db.session.query(Player).filter_by(name=name).update({Player.elo: e, Player.games: g})
     for name in lose_names:
-        e = players[name]['elo'] - delta
+        e = players[name]['elo'] - delta / len(lose_names)
         g = players[name]['games'] + 1
         db.session.query(Player).filter_by(name=name).update({Player.elo: e, Player.games: g})
 
@@ -93,10 +94,10 @@ def recalculate():
 
         # Update player totals
         for name in winners:
-            players[name]['elo'] += delta
+            players[name]['elo'] += delta / len(winners)
             players[name]['games'] += 1
         for name in losers:
-            players[name]['elo'] -= delta
+            players[name]['elo'] -= delta / len(losers)
             players[name]['games'] += 1
 
         # Submit match
