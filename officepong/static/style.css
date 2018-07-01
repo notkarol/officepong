@@ -1,11 +1,14 @@
 body {
-    max-width: 810px;
+    max-width: 860px;
     margin: auto;
     background-color: #ffa500;
 }
 table {
     border-collapse: collapse;
     position: relative;
+    overflow: auto;
+    max-height: 300px;
+    display: block;
 }
 td {
     border: 1px solid black;
@@ -82,14 +85,13 @@ select {
     max-height: 400px;
 }
 .leaderboard {
+    width: 250px;
     float: left;
-    overflow: scroll;
     max-height: 400px;
 }
 .matches {
     float: right;
-    overflow: scroll;
-    max-height: 400px;
+    width: 600px;
 }
 .wide {
     display: block;
