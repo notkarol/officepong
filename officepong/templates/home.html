@@ -40,7 +40,7 @@
 	  <th>Elo</th>
 	  <th align="right">Games</th>
 	</tr>
-	{% for elo, name, games in players if games >= 0 %}
+	{% for elo, name, games in players if games >= 3 %}
 	<tr>
 	  <td>{{name}}</td>
 	  <td align="right">{{elo|int}}</td>
