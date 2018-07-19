@@ -5,6 +5,9 @@
 	<title>OfficePong</title>
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
+	<!--Custom CSS-->
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 	<!--Boostrap CSS-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 
@@ -12,120 +15,133 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+	<!--Fontawesome Icons-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#">
-			<img src="{{ url_for('static', filename='favicon.ico') }}" />
+			<img src="{{ url_for('static', filename='favicon.ico') }}" width="30" height="30" alt="">
 			Office Pong
 		</a>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<form class="form-inline my-2 my-lg-0" action="{{ url_for("recalculate") }}" method="post">
+			<form class="form-inline my-2 my-lg-0 mx-3" action="{{ url_for("recalculate") }}" method="post">
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Recalculate</button>
 			</form>
 
-			<form class="form-inline my-2 my-lg-0" action="{{ url_for("register") }}" method="post">
+			<form class="form-inline my-2 my-lg-0 mx-3" action="{{ url_for("register") }}" method="post">
 				<input class="form-control mr-sm-2" type="text" placeholder="Name" aria-label="Name">
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Register</button>
 			</form>
 		</div>
 	</nav>
 
-	<div class="row">
-		<div class="col-3">
-			<h3>Match History</h3>
-		    <table class="table table-striped">
-				<tr class="thead-light">
-				  <th>Date</th>
-				  <th>Won</th>
-				  <th>Lost</th>
-				  <th>Score</th>
-				  <th>Act.</th>
-				  <th>Exp.</th>
-				  <th>&Delta;</th>
-				</tr>
+	<div class="page">
 
-				{% for match in matches[::-1] %}
-				<tr>
-					<td>{{convert_timestamp(match.timestamp)}}</td>
-					<td>{{match.winners}}</td>
-					<td>{{match.losers}}</td>
-					<td>{{match.win_score}} : {{match.lose_score}}</td>
-					<td>{{'%i%%' % (100 * (match.actual|float))}}</td>
-					<td>{{'%i%%' % (100 * (match.expected|float))}}</td>
-					{% if match.delta > 0 %}
-						<td class="text-right text-success"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{'%.1f' % (match.delta|float)}}</td>
-					{% elif match.delta < 0 %}
-						<td class="text-right text-danger"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> {{'%.1f' % (match.delta|float)}}</td>
-					{% else %}
-						<td class="text-right">{{'%.1f' % (match.delta|float)}}</td>
-					{% endif %}
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
-
-		<div class="col-9">
-			<h3>Leaderboard</h3>
-			<table class="table table-striped">
+		<div class="row my-3">
+			<div class="col-4 leaderboard">
+				<h3>Leaderboard</h3>
+				<table class="table table-striped">
 				<tr class="thead-light">
-				  <th>Name</th>
-				  <th>Elo</th>
-				  <th align="right">Games</th>
+					<th></th>
+					<th>Name</th>
+					<th>Elo</th>
+					<th align="right">Games</th>
 				</tr>
 
 				{% for elo, name, games in players if games >= 3 %}
-				<tr>
-				  <td>{{name}}</td>
-				  <td align="right">{{elo|int}}</td>
-				  <td align="right">{{games|int}}</td>
-				</tr>
+					<tr>
+						<td></td>
+						<td>{{name}}</td>
+						<td align="right">{{elo|int}}</td>
+						<td align="right">{{games|int}}</td>
+					</tr>
 				{% endfor %}
-		    </table>
-		</div>
-	</div>
-
-	<hr>
-
-	<div class="row">
-		<form action="{{ url_for("add_match") }}" method="post">
-		    <div class="col-6">
-				<h3>Loser</h3>
-				{% for elo, name, _ in players %}
-					<input type="checkbox" value="{{name}}" name="loser" id="lose_{{name}}"/>
-					<label for="lose_{{name}}">{{name}}</label>
-				{% endfor %}
-
-				<select class="lose_score" name="lose_score">
-					<option disabled selected value>
-
-					{% for n in range(31) %}
-						<option value="{{n}}" class="text-center">{{n}}</option>
-					{% endfor %}
-				</select>
+				</table>
 			</div>
 
-			<div class="col-6">
-				<h3>Winner</h3>
-				{% for elo, name, _ in players %}
-					<input type="checkbox" value="{{name}}" name="winner" id="win_{{name}}"/>
-					<label for="win_{{name}}">{{name}}</label>
-				{% endfor %}
+			<div class="col-8">
+				<h3>Match History</h3>
+				<table class="table table-striped">
+					<tr class="thead-light">
+						<th>Date</th>
+						<th>Won</th>
+						<th>Lost</th>
+						<th>Score</th>
+						<th>Act.</th>
+						<th>Exp.</th>
+						<th>&Delta;</th>
+					</tr>
 
-				<select name="win_score">
-					{% for n in range(33) %}
-						{% if n == 21 %}
-							<option value="{{n}}" selected>{{n}}</option>
+					{% for match in matches[::-1] %}
+					<tr>
+						<td>{{convert_timestamp(match.timestamp)}}</td>
+						<td>{{match.winners}}</td>
+						<td>{{match.losers}}</td>
+						<td>{{match.win_score}} : {{match.lose_score}}</td>
+						<td>{{'%i%%' % (100 * (match.actual|float))}}</td>
+						<td>{{'%i%%' % (100 * (match.expected|float))}}</td>
+						{% if match.delta > 0 %}
+							<td class="text-right text-success"><i class="fas fa-arrow-up"></i> {{'%.1f' % (match.delta|float)}}</td>
+						{% elif match.delta < 0 %}
+							<td class="text-right text-danger"><i class="fas fa-arrow-down"></i> {{'%.1f' % (match.delta|float)}}</td>
 						{% else %}
-							<option value="{{n}}">{{n}}</option>
+							<td class="text-right">{{'%.1f' % (match.delta|float)}}</td>
 						{% endif %}
+					</tr>
 					{% endfor %}
-				</select>
+				</table>
+			</div>
+		</div>
+
+		<hr>
+
+		<form action="{{ url_for("add_match") }}" method="post">
+			<div class="row my-3">
+				<div class="col-6">
+						<h3>Loser</h3>
+						{% for elo, name, _ in players %}
+							<input type="checkbox" value="{{name}}" name="loser" id="lose_{{name}}"/>
+							<label for="lose_{{name}}">{{name}}</label>
+						{% endfor %}
+
+						<select class="lose_score" name="lose_score">
+							<option disabled selected value></option>
+
+							{% for n in range(31) %}
+								<option value="{{n}}" class="text-center">{{n}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-6">
+						<h3>Winner</h3>
+						{% for elo, name, _ in players %}
+							<input type="checkbox" value="{{name}}" name="winner" id="win_{{name}}"/>
+							<label for="win_{{name}}">{{name}}</label>
+						{% endfor %}
+
+						<select name="win_score">
+							{% for n in range(33) %}
+								{% if n == 21 %}
+									<option value="{{n}}" selected>{{n}}</option>
+								{% else %}
+									<option value="{{n}}">{{n}}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+				</div>
 			</div>
 
-			<input type="submit" value="Add Match" class="btn btn-primary wide">
+			<div class="row">
+				<div class="col-12">
+					<input type="submit" value="Add Match" class="btn btn-primary wide">
+				</div>	
+			</div>
 		</form>
 	</div>
 </body>
