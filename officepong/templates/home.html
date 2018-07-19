@@ -85,9 +85,9 @@
 						<td>{{'%i%%' % (100 * (match.actual|float))}}</td>
 						<td>{{'%i%%' % (100 * (match.expected|float))}}</td>
 						{% if match.delta > 0 %}
-							<td class="text-right text-success"><i class="fas fa-arrow-up"></i> {{'%.1f' % (match.delta|float)}}</td>
+							<td class="text-right text-success">{{'%.1f' % (match.delta|float)}} <i class="fas fa-arrow-up"></i></td>
 						{% elif match.delta < 0 %}
-							<td class="text-right text-danger"><i class="fas fa-arrow-down"></i> {{'%.1f' % (match.delta|float)}}</td>
+							<td class="text-right text-danger">{{'%.1f' % (match.delta|float)}} <i class="fas fa-arrow-down"></i></td>
 						{% else %}
 							<td class="text-right">{{'%.1f' % (match.delta|float)}}</td>
 						{% endif %}
