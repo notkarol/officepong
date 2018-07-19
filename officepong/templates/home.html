@@ -55,9 +55,9 @@
 					<td>{{match.win_score}} : {{match.lose_score}}</td>
 					<td>{{'%i%%' % (100 * (match.actual|float))}}</td>
 					<td>{{'%i%%' % (100 * (match.expected|float))}}</td>
-					{% if match.delta > "0" %}
+					{% if match.delta > 0 %}
 						<td class="text-right text-success"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{'%.1f' % (match.delta|float)}}</td>
-					{% elif match.delta < "0" %}
+					{% elif match.delta < 0 %}
 						<td class="text-right text-danger"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> {{'%.1f' % (match.delta|float)}}</td>
 					{% else %}
 						<td class="text-right">{{'%.1f' % (match.delta|float)}}</td>
@@ -116,7 +116,7 @@
 
 				<select name="win_score">
 					{% for n in range(33) %}
-						{% if n == "21"}
+						{% if n == 21 %}
 							<option value="{{n}}" selected>{{n}}</option>
 						{% else %}
 							<option value="{{n}}">{{n}}</option>
