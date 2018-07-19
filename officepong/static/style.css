@@ -3,6 +3,7 @@ body {
     margin: auto;
     background-color: #ffa500;
 }
+
 table {
     border-collapse: collapse;
     position: relative;
@@ -10,11 +11,13 @@ table {
     max-height: 300px;
     display: block;
 }
+
 td {
     border: 1px solid black;
     padding: 5px;
     margin: 5px;
 }
+
 label {
     display: inline-block;
     cursor: pointer;    
@@ -25,44 +28,54 @@ label {
     text-align: center;
     background-color: #eeeeee;
 }
+
 input[type="checkbox"] {
     display: none;
 }
+
 input[type="submit"] {
     margin: 0px;
     padding: 10px;
     background-color: #eeeeee;
 }
+
 input[type="submit"] {
     margin: 0px;
     padding: 10px;
     background-color: #ffb6c1;
 }
+
 input[type="text"] {
     margin: 0px;
     padding: 10px;
     background-color: #eeeeee;
 }
+
 input[type="radio"] {
     display: none;
 }
+
 .winner input[type="checkbox"]:checked+label {
     background: #98fb98;
 }
+
 .loser input[type="checkbox"]:checked+label {
     background: #f08080;
 }
+
 div.winner {
     max-width: 400px;
     position: relative;
     display: inline-block;
 }
+
 div.loser {
     max-width: 400px;
     float: right;
     position: relative;
     display: inline-block;
 }
+
 select {
     text-align-last: center;
     margin: 0px;
@@ -70,33 +83,45 @@ select {
     font-size: 1.5em;
     background-color: #eeeeee;
 }
+
 .winner select {
     border: 1px solid #98fb98;
     width: 400px;
     margin: 20px 0px;
 }
+
 .loser select {
     border: 1px solid #f08080;
     width: 400px;
     margin: 20px 0px;
 }
+
 .results {
     height: 400px;
     max-height: 400px;
 }
+
 .leaderboard {
     width: 250px;
     float: left;
     max-height: 400px;
 }
+
 .matches {
     float: right;
     width: 600px;
 }
+
 .wide {
     display: block;
     width: 100%;
 }
+
 .recalculate {
     float: right;
+}
+
+.row-padding {
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
