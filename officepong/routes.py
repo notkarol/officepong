@@ -4,7 +4,7 @@ Handle routes for Flask website
 from datetime import datetime
 from flask import redirect, render_template, request, url_for
 
-from officepong import app, db, elo
+from officepong import app, db, elo, slack
 from officepong.models import Player, Match
 
 @app.route('/register', methods=['POST'])
@@ -32,7 +32,7 @@ def add_match():
     # Minimize misclicks
     if lose_score + 2 > win_score or (win_score not in (11, 21) and lose_score + 2 != win_score):
         return redirect(url_for('index'))
-    
+
     # Don't add score if there's a problem with the names
     if not win_names or not lose_names:
         return redirect(url_for('index'))
@@ -69,6 +69,7 @@ def add_match():
     db.session.add(match)
 
     db.session.commit()
+    slack.post(win_names, lose_names, win_score, lose_score, delta)
     return redirect(url_for('index'))
 
 
