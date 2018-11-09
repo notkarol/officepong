@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import redirect, render_template, request, url_for
 
 from officepong import app, db, elo
-from officepong.models import Player, Match
+from officepong.models import Player, Team, SinglesMatch, DoublesMatch
 
 @app.route('/register', methods=['POST'])
 def register():
